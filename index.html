@@ -96,6 +96,7 @@
       color: #6ee7b7;
     }
 
+    body.dark-mode .cls-brilliant { background: rgba(6, 182, 212, 0.25); color: #67e8f9; border: 1px solid rgba(34, 211, 238, 0.4); }
     body.dark-mode .cls-book { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
     body.dark-mode .cls-best { background: rgba(34, 197, 94, 0.22); color: #86efac; }
     body.dark-mode .cls-good { background: rgba(52, 211, 153, 0.15); color: #6ee7b7; }
@@ -500,6 +501,61 @@
       font-weight: 600;
       color: var(--muted);
       margin-left: 4px;
+    }
+
+    .player-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .chess-clock {
+      font-family: var(--mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      padding: 4px 10px;
+      min-width: 66px;
+      text-align: center;
+      border-radius: 7px;
+      background: var(--surface-subtle);
+      color: var(--muted);
+      border: 1px solid var(--border-strong);
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .chess-clock.active-clock {
+      background: var(--brand);
+      color: #ffffff;
+      border-color: var(--brand);
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.16);
+    }
+
+    .chess-clock.low-time {
+      background: #dc2626;
+      color: #ffffff;
+      border-color: #b91c1c;
+      animation: clockUrgentPulse 0.85s ease-in-out infinite;
+    }
+
+    .chess-clock.flagged {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-color: var(--danger);
+      animation: none;
+    }
+
+    @keyframes clockUrgentPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+
+    .time-grid-5 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
     }
 
     .turn-indicator {
@@ -1289,6 +1345,7 @@
       border-radius: 999px;
     }
 
+    .cls-brilliant { background: #cffafe; color: #0e7490; border: 1px solid #67e8f9; }
     .cls-book { background: #fef3c7; color: #92400e; }
     .cls-best { background: #dcfce7; color: #166534; }
     .cls-good { background: rgba(45, 106, 79, 0.14); color: #1e3a2f; }
@@ -1590,6 +1647,48 @@
       box-shadow: 0 4px 10px rgba(15, 23, 42, 0.22);
       transform: translate(-50%, -50%);
       z-index: 18;
+    }
+
+    .fx-brilliant-burst {
+      position: absolute;
+      width: 12.5%;
+      height: 12.5%;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fx-brilliant-burst::before {
+      content: "";
+      position: absolute;
+      inset: 2%;
+      border-radius: 50%;
+      border: 3.5px solid #06b6d4;
+      box-shadow: 0 0 22px rgba(34, 211, 238, 0.95), inset 0 0 14px rgba(165, 243, 252, 0.85);
+      animation: brilliantExpand 0.78s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .fx-brilliant-burst::after {
+      content: "";
+      position: absolute;
+      inset: -12%;
+      background: radial-gradient(circle, rgba(207, 250, 254, 0.92) 0%, rgba(34, 211, 238, 0.55) 42%, transparent 74%);
+      animation: flashFade 0.65s ease-out forwards;
+    }
+
+    @keyframes brilliantExpand {
+      0% { transform: scale(0.3); opacity: 1; border-width: 5px; }
+      55% { opacity: 0.9; }
+      100% { transform: scale(2.55); opacity: 0; border-width: 1px; }
+    }
+
+    .fx-float-badge.brilliant {
+      background: linear-gradient(135deg, #0891b2, #0369a1);
+      color: #ffffff;
+      border: 1.5px solid #a5f3fc;
+      box-shadow: 0 0 14px rgba(34, 211, 238, 0.7), 0 4px 10px rgba(15, 23, 42, 0.3);
+      animation: floatPowerful 1.05s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
     .fx-float-badge.powerful {
@@ -1990,7 +2089,10 @@
               <div class="captured-row" id="topCaptured"></div>
             </div>
           </div>
-          <div class="turn-indicator" id="topTurnStatus"></div>
+          <div class="player-right">
+            <div class="turn-indicator" id="topTurnStatus"></div>
+            <div class="chess-clock" id="topClock" aria-label="Top player clock">10:00</div>
+          </div>
         </div>
         <div class="bot-speech-bar" id="topBotSpeech">
           <span class="bot-speech-text" id="topBotSpeechText">Ready when you are. Let's see your opening prep!</span><span class="bot-speech-cursor done" id="topBotCursor"></span>
@@ -2032,7 +2134,10 @@
               <div class="captured-row" id="bottomCaptured"></div>
             </div>
           </div>
-          <div class="turn-indicator" id="bottomTurnStatus"></div>
+          <div class="player-right">
+            <div class="turn-indicator" id="bottomTurnStatus"></div>
+            <div class="chess-clock" id="bottomClock" aria-label="Bottom player clock">10:00</div>
+          </div>
         </div>
         <div class="bot-speech-bar" id="bottomBotSpeech" style="display:none;">
           <span class="bot-speech-text" id="bottomBotSpeechText"></span><span class="bot-speech-cursor done" id="bottomBotCursor"></span>
@@ -2056,6 +2161,17 @@
           <div class="segmented-2" id="playModeGroup" role="radiogroup" aria-label="Play Mode">
             <button type="button" class="seg-btn active" data-playmode="ai">vs. Apex AI</button>
             <button type="button" class="seg-btn" data-playmode="pass">Pass &amp; Play (2P)</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label">Time Control</label>
+          <div class="time-grid-5" id="timeControlGroup" role="radiogroup" aria-label="Time Control">
+            <button type="button" class="choice-chip" data-tc="none">∞ Off</button>
+            <button type="button" class="choice-chip" data-tc="bullet1">1 min</button>
+            <button type="button" class="choice-chip" data-tc="blitz3_2">3 | 2</button>
+            <button type="button" class="choice-chip" data-tc="blitz5">5 min</button>
+            <button type="button" class="choice-chip active" data-tc="rapid10">10 min</button>
           </div>
         </div>
 
@@ -3950,10 +4066,30 @@
           const playedMove = legal.find(m => moveToUci(m) === playedUci);
           if (!playedMove) return null;
 
-          const moverIsWhite = g.turn === WHITE;
+          const moverColor = g.turn;
+          const moverIsWhite = moverColor === WHITE;
+          const inChkBefore = g.inCheck();
           const playedSan = g.moveToSan(playedMove, legal);
           const playedFrom = playedMove & 127;
           const playedTo = (playedMove >> 7) & 127;
+
+          const MAT_VAL = [0, 100, 320, 330, 500, 900, 0];
+          let moverMat = 0, oppMat = 0;
+          for (let r = 0; r < 8; r++) {
+            for (let f = 0; f < 8; f++) {
+              const p = g.board[r * 16 + f];
+              if (!p) continue;
+              const v = MAT_VAL[p & 7];
+              if ((p & 8) === moverColor) moverMat += v;
+              else oppMat += v;
+            }
+          }
+          const matDiffBefore = moverMat - oppMat;
+          const movingPiece = g.board[playedFrom];
+          const promoPiece = (playedMove >> 18) & 15;
+          const capPiece = (playedMove >> 14) & 15;
+          const movedVal = MAT_VAL[(promoPiece || movingPiece) & 7];
+          const capVal = capPiece ? MAT_VAL[capPiece & 7] : 0;
 
           const prefix = g.uciHistory.join(' ');
           const fullKey = prefix ? (prefix + ' ' + playedUci) : playedUci;
@@ -4010,12 +4146,68 @@
           const wpPlayed = toWinProb(playedScoreMover);
           const wpLoss = Math.max(0, wpBest - wpPlayed);
 
+          let isBrilliant = false;
+          if (!isBook && (playedMove === bestMove || wpLoss <= 1.2) && playedScoreMover >= -20 && (matDiffBefore < 600 || playedScoreMover > 28000)) {
+            g.makeMove(playedMove);
+            if (g.variant === 'atomic' && capPiece) {
+              const sacOriginVal = MAT_VAL[movingPiece & 7];
+              if (sacOriginVal >= 500 && sacOriginVal - capVal >= 170 && playedScoreMover >= 120) {
+                isBrilliant = true;
+              }
+            } else {
+              const oppLegal = g.getLegalMoves();
+              if (g.board[playedTo] !== 0 && movedVal >= 320) {
+                let canCapDest = false;
+                let minAtk = 9999;
+                for (let i = 0; i < oppLegal.length; i++) {
+                  const om = oppLegal[i];
+                  if (((om >> 7) & 127) === playedTo) {
+                    canCapDest = true;
+                    const aPt = g.board[om & 127] & 7;
+                    const aVal = aPt === WK ? 0 : MAT_VAL[aPt];
+                    if (aVal < minAtk) minAtk = aVal;
+                  }
+                }
+                if (canCapDest) {
+                  const destDefended = g.isSquareAttacked(playedTo, moverColor);
+                  if (!destDefended && (movedVal - capVal >= 180)) {
+                    isBrilliant = true;
+                  } else if (destDefended && minAtk < movedVal && ((movedVal - minAtk) - capVal >= 150)) {
+                    isBrilliant = true;
+                  }
+                }
+              }
+              if (!isBrilliant && !inChkBefore && playedScoreMover >= 80) {
+                for (let i = 0; i < oppLegal.length; i++) {
+                  const om = oppLegal[i];
+                  const tSq = (om >> 7) & 127;
+                  if (tSq === playedTo) continue;
+                  const vic = g.board[tSq];
+                  if (!vic || (vic & 8) !== moverColor) continue;
+                  const vVal = MAT_VAL[vic & 7];
+                  if (vVal < 320) continue;
+                  const aPt = g.board[om & 127] & 7;
+                  const aVal = aPt === WK ? 0 : MAT_VAL[aPt];
+                  const tDef = g.isSquareAttacked(tSq, moverColor);
+                  const loss = !tDef ? vVal : (vVal - aVal);
+                  if (loss - capVal >= 200) {
+                    isBrilliant = true;
+                    break;
+                  }
+                }
+              }
+            }
+            g.unmakeMove();
+          }
+
           let key = 'good';
           let label = 'Good Move';
           let shortTag = 'Good';
 
           if (isBook && wpLoss <= 6.0) {
             key = 'book'; label = 'Book Move'; shortTag = 'Book';
+          } else if (isBrilliant) {
+            key = 'brilliant'; label = 'Brilliant'; shortTag = '!!';
           } else if (playedMove === bestMove || wpLoss <= 1.8) {
             key = 'best'; label = 'Best Move'; shortTag = 'Best';
           } else if (wpLoss <= 5.5) {
@@ -4679,8 +4871,29 @@
           }
 
           const wpLoss = Math.max(0, toWinProb(bestScoreMover) - toWinProb(playedScoreMover));
+          let isBrilliant = false;
+          if ((playedMove.uci === bestMove.uci || wpLoss <= 1.2) && playedMove.caps.length === 0 && playedScoreMover >= 75) {
+            g.makeMove(playedMove);
+            const oppJumps = g.getLegalMoves(true);
+            g.unmakeMove();
+            if (oppJumps.length > 0 && legal.length > 1) {
+              for (let i = 0; i < legal.length; i++) {
+                if (legal[i].uci === playedMove.uci) continue;
+                g.makeMove(legal[i]);
+                const safeAlt = g.getLegalMoves(true).length === 0;
+                g.unmakeMove();
+                if (safeAlt) {
+                  isBrilliant = true;
+                  break;
+                }
+              }
+            }
+          }
+
           let key = 'good', label = 'Good Move', shortTag = 'Good';
-          if (playedMove.uci === bestMove.uci || wpLoss <= 1.8) {
+          if (isBrilliant) {
+            key = 'brilliant'; label = 'Brilliant'; shortTag = '!!';
+          } else if (playedMove.uci === bestMove.uci || wpLoss <= 1.8) {
             key = 'best'; label = 'Best Move'; shortTag = 'Best';
           } else if (wpLoss <= 5.5) {
             key = 'good'; label = 'Good Move'; shortTag = 'Good';
@@ -4878,6 +5091,20 @@
     let currentSkin = 'classic';
     let chainPrefix = null; // For branching multi-jumps in Checkers
 
+    const TIME_CONTROLS = {
+      none:     { baseMs: 0,      incMs: 0 },
+      bullet1:  { baseMs: 60000,  incMs: 0 },
+      blitz3_2: { baseMs: 180000, incMs: 2000 },
+      blitz5:   { baseMs: 300000, incMs: 0 },
+      rapid10:  { baseMs: 600000, incMs: 0 }
+    };
+    let currentTimeControl = 'rapid10';
+    let clockMs = { w: 600000, b: 600000 };
+    let clockRunning = false;
+    let lastClockStamp = 0;
+    let timeoutOutcome = null;
+    let lastWarnSec = { w: -1, b: -1 };
+
     const VARIANT_INFO = {
       standard: {
         title: 'Starting Position',
@@ -4949,6 +5176,8 @@
     const bottomCaptured = document.getElementById('bottomCaptured');
     const topTurnStatus = document.getElementById('topTurnStatus');
     const bottomTurnStatus = document.getElementById('bottomTurnStatus');
+    const topClockEl = document.getElementById('topClock');
+    const bottomClockEl = document.getElementById('bottomClock');
 
     const LEVEL_LABELS = {
       club: { name: 'Apex Bot', badge: 'Club 1600' },
@@ -5078,6 +5307,25 @@
         } catch (_) {}
       },
 
+      clockTick() {
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        try {
+          const t = ctx.currentTime;
+          playNoiseTransient(ctx, t, 0.018, 2200, 3.5, 0.14);
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(980, t);
+          gain.gain.setValueAtTime(0.06, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.025);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.028);
+        } catch (_) {}
+      },
+
       botBlip(mood = 'ready') {
         const ctx = getAudioCtx();
         if (!ctx) return;
@@ -5186,6 +5434,42 @@
             gain.connect(ctx.destination);
             osc.start(st);
             osc.stop(st + 0.19);
+          });
+        } catch (_) {}
+      },
+
+      brilliant() {
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        try {
+          const t = ctx.currentTime;
+          const sub = ctx.createOscillator();
+          const subGain = ctx.createGain();
+          sub.type = 'sine';
+          sub.frequency.setValueAtTime(155, t);
+          sub.frequency.exponentialRampToValueAtTime(44, t + 0.28);
+          subGain.gain.setValueAtTime(0.38, t);
+          subGain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+          sub.connect(subGain);
+          subGain.connect(ctx.destination);
+          sub.start(t);
+          sub.stop(t + 0.31);
+
+          playNoiseTransient(ctx, t, 0.045, 2100, 2.0, 0.24);
+
+          [523.25, 659.25, 783.99, 987.77, 1318.51].forEach((freq, i) => {
+            const st = t + i * 0.038;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = i % 2 === 0 ? 'triangle' : 'sine';
+            osc.frequency.setValueAtTime(freq, st);
+            gain.gain.setValueAtTime(0.001, st);
+            gain.gain.linearRampToValueAtTime(i === 4 ? 0.14 : 0.11, st + 0.02);
+            gain.gain.exponentialRampToValueAtTime(0.001, st + 0.42);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(st);
+            osc.stop(st + 0.44);
           });
         } catch (_) {}
       },
@@ -5444,7 +5728,64 @@
       const centerX = ((toG.col + 0.5) * 12.5) + '%';
       const centerY = ((toG.row + 0.22) * 12.5) + '%';
 
-      if (ana.key === 'best') {
+      if (ana.key === 'brilliant') {
+        if (playAudio) sfx.brilliant();
+
+        boardShellEl.classList.remove('fx-board-impact');
+        void boardShellEl.offsetWidth;
+        boardShellEl.classList.add('fx-board-impact');
+
+        const burst = document.createElement('div');
+        burst.className = 'fx-brilliant-burst';
+        burst.style.left = leftPct;
+        burst.style.top = topPct;
+        boardFxLayerEl.appendChild(burst);
+
+        const badge = document.createElement('div');
+        badge.className = 'fx-float-badge brilliant';
+        badge.style.left = centerX;
+        badge.style.top = centerY;
+        badge.textContent = '!! Brilliant';
+        boardFxLayerEl.appendChild(badge);
+
+        if (pieceAlive) {
+          hiddenGlideSquares.add(toSq);
+          syncGlideHiddenClasses();
+          const actor = document.createElement('div');
+          actor.className = 'gliding-piece';
+          actor.style.left = leftPct;
+          actor.style.top = topPct;
+          actor.innerHTML = PIECE_SVGS[pieceCode];
+          boardFxLayerEl.appendChild(actor);
+
+          const cleanup = () => {
+            actor.remove();
+            if (token === animSeq) {
+              hiddenGlideSquares.delete(toSq);
+              syncGlideHiddenClasses();
+            }
+          };
+
+          if (actor.animate) {
+            const anim = actor.animate([
+              { transform: 'scale(1) translateY(0%)', filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.24))' },
+              { transform: 'scale(1.38) translateY(-20%)', filter: 'drop-shadow(0 14px 16px rgba(6,182,212,0.75)) drop-shadow(0 0 14px rgba(165,243,252,0.95))', offset: 0.3 },
+              { transform: 'scale(0.93) translateY(4%)', filter: 'drop-shadow(0 4px 10px rgba(6,182,212,0.65))', offset: 0.56 },
+              { transform: 'scale(1.08) translateY(-3%)', offset: 0.78 },
+              { transform: 'scale(1) translateY(0%)', filter: 'drop-shadow(0 2px 2px rgba(0,0,0,0.24))' }
+            ], {
+              duration: 680,
+              easing: 'cubic-bezier(0.22, 1, 0.36, 1)'
+            });
+            anim.onfinish = cleanup;
+            anim.oncancel = cleanup;
+          } else {
+            setTimeout(cleanup, 680);
+          }
+        }
+
+        setTimeout(() => { burst.remove(); badge.remove(); }, 1100);
+      } else if (ana.key === 'best') {
         if (playAudio) sfx.powerful();
 
         // Board impact thud
@@ -5646,9 +5987,148 @@
       return typeof m === 'object' ? m.to : ((m >> 7) & 127);
     }
 
+    function getLiveOutcome() {
+      return timeoutOutcome || game.getGameOutcome();
+    }
+
+    function formatClockMs(ms) {
+      const clamped = Math.max(0, ms);
+      if (clamped < 10000) {
+        const secs = Math.floor(clamped / 1000);
+        const tenths = Math.floor((clamped % 1000) / 100);
+        return `0:0${secs}.${tenths}`;
+      }
+      const totalSec = Math.ceil(clamped / 1000);
+      const mins = Math.floor(totalSec / 60);
+      const secs = totalSec % 60;
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function hasMatingPotential(winnerChar) {
+      if (currentGameType === 'checkers' || currentVariant === 'atomic') return true;
+      const winColor = winnerChar === 'w' ? core.WHITE : core.BLACK;
+      for (let r = 0; r < 8; r++) {
+        for (let f = 0; f < 8; f++) {
+          const p = game.board[r * 16 + f];
+          if (p && (p & 8) === winColor && (p & 7) !== core.WK) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    function renderClocks() {
+      if (currentTimeControl === 'none') {
+        topClockEl.style.display = 'none';
+        bottomClockEl.style.display = 'none';
+        return;
+      }
+      topClockEl.style.display = 'block';
+      bottomClockEl.style.display = 'block';
+
+      const topColor = boardFlipped ? 'w' : 'b';
+      const bottomColor = boardFlipped ? 'b' : 'w';
+      const reviewing = isReviewing();
+      const sourceClocks = (reviewing && plySnapshots[reviewPly] && plySnapshots[reviewPly].clocks)
+        ? plySnapshots[reviewPly].clocks
+        : clockMs;
+
+      const outcome = getLiveOutcome();
+      const activeTurnChar = game.turn === core.WHITE ? 'w' : 'b';
+
+      function updateSingleClock(el, sideChar) {
+        const ms = sourceClocks[sideChar];
+        el.textContent = formatClockMs(ms);
+        const isTicking = !reviewing && !outcome.over && clockRunning && activeTurnChar === sideChar;
+        const isLow = isTicking && ms > 0 && ms < 20000;
+        const isFlagged = !reviewing && ms <= 0 && timeoutOutcome !== null;
+
+        let cls = 'chess-clock';
+        if (isFlagged) cls += ' flagged';
+        else if (isLow) cls += ' low-time';
+        else if (isTicking) cls += ' active-clock';
+        el.className = cls;
+      }
+
+      updateSingleClock(topClockEl, topColor);
+      updateSingleClock(bottomClockEl, bottomColor);
+    }
+
+    setInterval(() => {
+      if (!clockRunning || currentTimeControl === 'none') return;
+      if (getLiveOutcome().over) {
+        clockRunning = false;
+        renderClocks();
+        return;
+      }
+      const now = performance.now();
+      const dt = Math.max(0, now - lastClockStamp);
+      lastClockStamp = now;
+
+      const activeSide = game.turn === core.WHITE ? 'w' : 'b';
+      clockMs[activeSide] = Math.max(0, clockMs[activeSide] - dt);
+
+      if (clockMs[activeSide] > 0 && clockMs[activeSide] <= 10000) {
+        const humanActive = playMode === 'pass' || activeSide === playerSide;
+        if (humanActive) {
+          const secLeft = Math.ceil(clockMs[activeSide] / 1000);
+          if (lastWarnSec[activeSide] !== secLeft) {
+            lastWarnSec[activeSide] = secLeft;
+            sfx.clockTick();
+          }
+        }
+      }
+
+      if (clockMs[activeSide] <= 0) {
+        clockMs[activeSide] = 0;
+        clockRunning = false;
+        activeGameToken++;
+        botThinking = false;
+        pendingPromotion = null;
+        promoOverlay.classList.remove('open');
+        if (dragState) {
+          clearTimeout(dragState.settleTimer);
+          clearDragOverSquare();
+          dragState.ghost.remove();
+          if (dragState.originEl) dragState.originEl.classList.remove('dragging-origin');
+          dragState = null;
+        }
+        selectedSq = -1;
+        chainPrefix = null;
+        reviewPly = null;
+
+        const otherSide = activeSide === 'w' ? 'b' : 'w';
+        if (hasMatingPotential(otherSide)) {
+          timeoutOutcome = { over: true, winner: otherSide, reason: 'Time Out' };
+        } else {
+          timeoutOutcome = { over: true, winner: 'draw', reason: 'Time Out vs. Bare King' };
+        }
+
+        const endKind = timeoutOutcome.winner === 'draw'
+          ? 'draw'
+          : (playMode === 'pass' ? 'win' : (timeoutOutcome.winner === playerSide ? 'win' : 'loss'));
+        sfx.gameEnd(endKind);
+
+        if (playMode === 'ai') {
+          if (timeoutOutcome.winner === 'draw') {
+            botSay(pickBotLine('draw'), 'ready');
+          } else if (timeoutOutcome.winner === playerSide) {
+            botSay(pickBotLine('botTimeout'), 'defeat');
+          } else {
+            botSay(pickBotLine('humanTimeout'), 'victory');
+          }
+        }
+        renderBoard();
+        return;
+      }
+
+      renderClocks();
+    }, 50);
+
     function isHumanTurn() {
       if (isReviewing()) return false;
-      const outcome = game.getGameOutcome();
+      const outcome = getLiveOutcome();
       if (outcome.over || botThinking) return false;
       if (playMode === 'pass') return true;
       const turnChar = game.turn === core.WHITE ? 'w' : 'b';
@@ -5753,6 +6233,15 @@
         "Interesting… let me calculate a little deeper…",
         "Hold on, checking for hidden traps…"
       ],
+      humanBrilliant: [
+        "BRILLIANT (!!) ?! Did you just sacrifice a piece and it ACTUALLY WORKS?! 🤯",
+        "WAIT A SECOND—(!!) ?! Are you secretly Magnus Carlsen?!",
+        "Whoa!! A genuine tactical sacrifice! My circuits are officially amazed!"
+      ],
+      botBrilliant: [
+        "Behold: a Brilliant (!!) sacrifice! Go ahead—take it if you dare! 😉",
+        "Boom (!!)! Calculated that tactical sacrifice all the way through!"
+      ],
       humanBest: [
         "Whoa—that was literally my #1 engine choice! Nice find! ★",
         "Clinical move! Did you secretly study Grandmaster prep?!",
@@ -5825,6 +6314,14 @@
       draw: [
         "A hard-fought draw! Neither of us blinked.",
         "Dead even! Respect—want a tiebreaker game?"
+      ],
+      humanTimeout: [
+        "Flagged!! Time's up—my internal clock never misses a millisecond! ⏱",
+        "0:00 on the clock! Speed chess is ruthless—rematch?"
+      ],
+      botTimeout: [
+        "NOOO my clock hit 0:00?! I got carried away calculating variations!! 😱",
+        "Flagged?! You out-blitzed my CPU! Respect!"
       ]
     };
 
@@ -6093,7 +6590,7 @@
         renderCapturedRow(bottomCaptured, whiteCaps, diff > 0 ? diff : 0);
       }
 
-      const outcome = game.getGameOutcome();
+      const outcome = getLiveOutcome();
       const activeTurnChar = game.turn === core.WHITE ? 'w' : 'b';
 
       topPlayerCard.classList.toggle('active-turn', !outcome.over && !isReviewing() && activeTurnChar === topColor);
@@ -6103,6 +6600,7 @@
       bottomTurnStatus.className = 'turn-indicator';
       topTurnStatus.innerHTML = '';
       bottomTurnStatus.innerHTML = '';
+      renderClocks();
 
       if (isReviewing()) {
         return;
@@ -6125,7 +6623,7 @@
 
     function renderEvalBar() {
       evalBarEl.classList.toggle('flipped', boardFlipped);
-      const outcome = game.getGameOutcome();
+      const outcome = getLiveOutcome();
       let whitePct = 50;
       let label = '0.0';
 
@@ -6191,10 +6689,12 @@
         return;
       }
 
-      const pillSuffix = ana.shortTag.startsWith('?') ? ` ${ana.shortTag}` : '';
+      const pillSuffix = (ana.shortTag.startsWith('?') || ana.shortTag === '!!') ? ` ${ana.shortTag}` : '';
       const evalShift = `${formatEvalCp(ana.evalBeforeWhite)} &rarr; ${formatEvalCp(ana.evalAfterWhite)}`;
       let detailHtml = '';
-      if (ana.key === 'book') {
+      if (ana.key === 'brilliant') {
+        detailHtml = `Brilliant tactical sacrifice — engine's top choice!`;
+      } else if (ana.key === 'book') {
         detailHtml = `Standard Grandmaster opening theory.`;
       } else if (ana.isSameMove || ana.key === 'best') {
         detailHtml = `Matches the engine's top move choice.`;
@@ -6279,7 +6779,7 @@
     }
 
     function renderStatusAndHistory() {
-      const outcome = game.getGameOutcome();
+      const outcome = getLiveOutcome();
       const reviewing = isReviewing();
       const activePly = getActivePly();
       statusBannerEl.classList.remove('game-over', 'in-check-banner');
@@ -6510,7 +7010,7 @@
         if (plySnapshots[plyIdx]) {
           plySnapshots[plyIdx].evalWhite = res.analysis.evalAfterWhite;
         }
-        if (plyIdx === sanHistory.length - 1 && !game.getGameOutcome().over) {
+        if (plyIdx === sanHistory.length - 1 && !getLiveOutcome().over) {
           currentEvalWhite = res.analysis.evalAfterWhite;
         }
         renderEvalBar();
@@ -6547,6 +7047,15 @@
       const movingPiece = game.board[from];
       const placedPiece = promo || movingPiece;
       const isAtomicCap = currentGameType === 'chess' && currentVariant === 'atomic' && (cap !== 0 || (flags & 1) !== 0);
+      const moverSide = game.turn === core.WHITE ? 'w' : 'b';
+
+      if (currentTimeControl !== 'none' && clockRunning) {
+        const now = performance.now();
+        clockMs[moverSide] = Math.max(0, clockMs[moverSide] - Math.max(0, now - lastClockStamp));
+        if (clockMs[moverSide] > 0) {
+          clockMs[moverSide] += TIME_CONTROLS[currentTimeControl].incMs;
+        }
+      }
 
       game.makeMove(m);
       game.uciHistory.push(uci);
@@ -6562,8 +7071,17 @@
         currentEvalWhite = game.turn === core.WHITE ? raw : -raw;
       }
 
-      const outcome = game.getGameOutcome();
+      const outcome = getLiveOutcome();
       const inChk = !outcome.over && game.inCheck();
+
+      if (currentTimeControl !== 'none' && !outcome.over) {
+        clockRunning = true;
+        lastClockStamp = performance.now();
+        lastWarnSec.w = -1;
+        lastWarnSec.b = -1;
+      } else {
+        clockRunning = false;
+      }
 
       const plyIdx = sanHistory.length - 1;
       const moverChar = (plyIdx & 1) === 0 ? 'w' : 'b';
@@ -6581,7 +7099,8 @@
         isCap: cap !== 0 || (flags & 1) !== 0,
         isCastle: (flags & 2) !== 0,
         isPromo: promo !== 0,
-        evalWhite: currentEvalWhite
+        evalWhite: currentEvalWhite,
+        clocks: { w: clockMs.w, b: clockMs.b }
       });
       moveAnalyses.push(null);
 
@@ -6656,14 +7175,17 @@
         }
         if (playMode === 'ai' && !outcome.over && ana && genMatchesCurrent(plyIdx)) {
           if (humanMoved && !inChk) {
-            if (ana.key === 'blunder') botSay(pickBotLine('humanBlunder'), 'playful');
+            if (ana.key === 'brilliant') botSay(pickBotLine('humanBrilliant'), 'shocked');
+            else if (ana.key === 'blunder') botSay(pickBotLine('humanBlunder'), 'playful');
             else if (ana.key === 'mistake' || ana.key === 'inaccuracy') botSay(pickBotLine('humanMistake'), 'smug');
             else if (ana.key === 'best') botSay(pickBotLine('humanBest'), 'impressed');
             else if (ana.key === 'book') botSay(pickBotLine('humanBook'), 'ready');
             else botSay(pickBotLine('thinking'), 'thinking');
           } else if (!humanMoved) {
             const botEval = playerSide === 'w' ? -ana.evalAfterWhite : ana.evalAfterWhite;
-            if (ana.key === 'blunder') {
+            if (ana.key === 'brilliant') {
+              botSay(pickBotLine('botBrilliant'), 'smug');
+            } else if (ana.key === 'blunder') {
               botSay(pickBotLine('botBlunderSelf'), 'sweating');
             } else if (!inChk && !isAtomicCap && !(isObj && m.caps && m.caps.length >= 2)) {
               if (botEval > 280 && Math.random() < 0.5) {
@@ -6690,32 +7212,46 @@
     }
 
     async function triggerBotTurn(prevAnalysisPromise = null) {
-      if (playMode === 'pass') return;
+      if (playMode === 'pass' || getLiveOutcome().over) return;
       const token = ++activeGameToken;
       botThinking = true;
       renderBoard();
 
+      const botSide = playerSide === 'w' ? 'b' : 'w';
+      const botRemMs = clockMs[botSide];
+      let effectiveLevel = botLevel;
+      if (currentTimeControl !== 'none' && clockRunning) {
+        if (botRemMs < 12000) effectiveLevel = 'club';
+        else if (botRemMs < 35000 && botLevel === 'gm') effectiveLevel = 'master';
+      }
+
       const startMs = performance.now();
-      const aiMovePromise = requestAiMove([...game.uciHistory], botLevel, currentVariant, currentSeed960, currentGameType);
+      const aiMovePromise = requestAiMove([...game.uciHistory], effectiveLevel, currentVariant, currentSeed960, currentGameType);
 
       let minCadenceMs = 340;
       if (prevAnalysisPromise) {
         const prevAna = await prevAnalysisPromise;
         if (prevAna) {
-          if (prevAna.key === 'blunder') minCadenceMs = 1080;
+          if (prevAna.key === 'brilliant') minCadenceMs = 1150;
+          else if (prevAna.key === 'blunder') minCadenceMs = 1080;
           else if (prevAna.key === 'best') minCadenceMs = 840;
           else if (prevAna.key === 'mistake' || prevAna.key === 'inaccuracy') minCadenceMs = 740;
         }
       }
 
+      if (currentTimeControl !== 'none' && clockRunning) {
+        if (botRemMs < 12000) minCadenceMs = 75;
+        else if (botRemMs < 35000) minCadenceMs = Math.min(minCadenceMs, 250);
+      }
+
       const res = await aiMovePromise;
-      if (token !== activeGameToken) return;
+      if (token !== activeGameToken || getLiveOutcome().over) return;
 
       const elapsed = performance.now() - startMs;
       if (elapsed < minCadenceMs) {
         await new Promise(r => setTimeout(r, minCadenceMs - elapsed));
       }
-      if (token !== activeGameToken) return;
+      if (token !== activeGameToken || getLiveOutcome().over) return;
 
       botThinking = false;
       if (res && res.uci) {
@@ -7136,6 +7672,11 @@
       botThinking = false;
       pendingPromotion = null;
       chainPrefix = null;
+      timeoutOutcome = null;
+      clockRunning = false;
+      const initClock = TIME_CONTROLS[currentTimeControl].baseMs;
+      clockMs = { w: initClock, b: initClock };
+      lastWarnSec = { w: -1, b: -1 };
       promoOverlay.classList.remove('open');
 
       game = currentGameType === 'checkers' ? checkersInstance : chessInstance;
@@ -7190,6 +7731,7 @@
       clearBoardAnimations();
       activeGameToken++;
       chainPrefix = null;
+      timeoutOutcome = null;
       const humanColor = playerSide === 'w' ? core.WHITE : core.BLACK;
 
       if (playMode === 'pass') {
@@ -7218,6 +7760,17 @@
       }
 
       const lastIdx = sanHistory.length - 1;
+      if (lastIdx >= 0 && plySnapshots[lastIdx] && plySnapshots[lastIdx].clocks) {
+        clockMs = { w: plySnapshots[lastIdx].clocks.w, b: plySnapshots[lastIdx].clocks.b };
+        clockRunning = currentTimeControl !== 'none' && !getLiveOutcome().over;
+        lastClockStamp = performance.now();
+      } else {
+        const base = TIME_CONTROLS[currentTimeControl].baseMs;
+        clockMs = { w: base, b: base };
+        clockRunning = false;
+      }
+      lastWarnSec = { w: -1, b: -1 };
+
       if (lastIdx >= 0 && moveAnalyses[lastIdx]) {
         currentEvalWhite = moveAnalyses[lastIdx].evalAfterWhite;
       } else {
@@ -7380,6 +7933,20 @@
           b.classList.toggle('active', b === btn);
         });
         playMode = nextMode;
+        sfx.move();
+        startNewGame(playerSide);
+      });
+    });
+
+    // Time Control Selector (Bullet, Blitz, Rapid, Unlimited)
+    document.querySelectorAll('#timeControlGroup [data-tc]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const nextTc = btn.dataset.tc;
+        if (nextTc === currentTimeControl) return;
+        document.querySelectorAll('#timeControlGroup [data-tc]').forEach((b) => {
+          b.classList.toggle('active', b === btn);
+        });
+        currentTimeControl = nextTc;
         sfx.move();
         startNewGame(playerSide);
       });
