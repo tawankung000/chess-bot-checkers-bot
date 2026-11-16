@@ -45,6 +45,11 @@ An interactive, single-file **Chess & Checkers** web game powered by a custom in
 
 ## Changelog
 
+### v1.5.0
+- **Spoken Rival Voices (Web Speech TTS):** Added offline, zero-API-key voice synthesis with live SVG mouth-chatter sync and unique voice profiles for Goblin (1500), Sleepy Cat (1900), Apex Bot (2100), Polite GM (2550), and Cyber Overlord (BOSS MAX).
+- **Independent Microphone Toggle:** Added a header mic button next to the speaker toggle to mute/unmute spoken voices separately from 8-bit/board SFX, plus instant voice triggers on rival switch or face click.
+- **Natural Speech & Fallback Handling:** Cleanly strips emojis/symbols from spoken text and falls back to synth blips if `speechSynthesis` is blocked in sandboxed iframes.
+
 ### v1.4.0
 - **👾 Pixel Arcade (8-Bit) Skin & Chiptune SFX:** Added 16×16 retro pixel-art Chess & Checkers sprites with cursor-tracking eyes, CRT scanline board styling, and square-wave 8-bit sound effects and fanfare.
 - **🐉 Spooky Ghost / Dungeon RPG Skin:** Added Skeleton & Spooky Ghost pawns, Knights, Wizards, stone Dungeon Towers, and Dragon Queens on flickering torchlight stone tiles.
