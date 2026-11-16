@@ -45,6 +45,11 @@ An interactive, single-file **Chess & Checkers** web game powered by a custom in
 
 ## Changelog
 
+### v1.3.0
+- **Live Interactive Momentum Graph:** Real-time SVG evaluation curve in Move Analysis showing White/Black advantage per ply, highlighting `!!`, `?`, and `??` moves with click-to-jump board navigation.
+- **Post-Game Accuracy Report Card:** Auto-opening post-game modal (reopenable via the Move Analysis **Review** button) featuring 0–100% Overall Accuracy, Estimated Performance Elo, a 7-tier Move Breakdown, and a **Turning Point** jump button.
+- **Bot Personalities & Boss Fight Rivals:** 5 selectable rivals—Trash-Talk Goblin (1500), Sleepy Cat Master (1900), Apex Bot (2100), Polite Grandmaster (2550), and Cyber Overlord (BOSS MAX, 18-ply)—complete with animated SVG faces, cursor-tracking eyes, Web Audio voices, distinct playstyles, and reactive typewriter dialogue.
+
 ### v1.2.0 — Chess Clocks & Brilliant (`!!`) Moves (Latest)
 - **Added:** Inline digital chess clocks on both player cards with tenths-of-a-second precision below 10 seconds and final-10-second audio ticks.
 - **Added:** 5 time control presets (`Off`, `1 min`, `3 | 2`, `5 min`, `10 min`), time-pressure speed scaling for Apex Bot, and timeout / bare-king draw rules.
