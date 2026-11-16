@@ -45,6 +45,11 @@ An interactive, single-file **Chess & Checkers** web game powered by a custom in
 
 ## Changelog
 
+### v1.4.0
+- **👾 Pixel Arcade (8-Bit) Skin & Chiptune SFX:** Added 16×16 retro pixel-art Chess & Checkers sprites with cursor-tracking eyes, CRT scanline board styling, and square-wave 8-bit sound effects and fanfare.
+- **🐉 Spooky Ghost / Dungeon RPG Skin:** Added Skeleton & Spooky Ghost pawns, Knights, Wizards, stone Dungeon Towers, and Dragon Queens on flickering torchlight stone tiles.
+- **🏆 Slow-Mo Checkmate & Atomic KO Finisher:** Added a slow-motion final piece glide, camera zoom, golden spotlight, 42-piece confetti burst, and trophy banner transitioning into the Post-Game Accuracy Report Card (with all v1.3.0 Boss Rivals and analysis tools preserved).
+
 ### v1.3.0
 - **Live Interactive Momentum Graph:** Real-time SVG evaluation curve in Move Analysis showing White/Black advantage per ply, highlighting `!!`, `?`, and `??` moves with click-to-jump board navigation.
 - **Post-Game Accuracy Report Card:** Auto-opening post-game modal (reopenable via the Move Analysis **Review** button) featuring 0–100% Overall Accuracy, Estimated Performance Elo, a 7-tier Move Breakdown, and a **Turning Point** jump button.
